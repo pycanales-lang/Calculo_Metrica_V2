@@ -62,29 +62,31 @@ body {
     user-select: none;
 }
 
-/* Marca de agua que sigue el scroll y es difícil de quitar */
+/* Marca de Agua Estética y Profesional */
 #watermark {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 150vw; /* Más ancho para cubrir la rotación */
+    height: 150vh;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     align-content: space-around;
-    opacity: 0.1; /* Muy tenue pero visible en fotos */
+    opacity: 0.04; /* Casi invisible, pero sale en fotos con contraste */
     pointer-events: none;
     z-index: 9999;
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.65rem; /* Pequeño y discreto */
+    text-transform: uppercase;
+    letter-spacing: 2px;
     color: #000;
-    transform: rotate(-30deg);
+    transform: rotate(-25deg) translate(-10%, -10%);
     user-select: none;
+    gap: 100px; /* Espaciado entre repeticiones para que no se vea "sucio" */
 }
 
-/* Oscurecer contenido si el usuario sale de la pestaña (intento de captura) */
-.blur-content {
-    filter: blur(10px);
-    transition: filter 0.3s;
+/* Evitar que se vea en impresiones si es que llegaran a saltar el bloqueo */
+@media print {
+    #watermark { display: none; }
 }
