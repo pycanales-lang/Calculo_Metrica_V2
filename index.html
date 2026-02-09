@@ -9,6 +9,24 @@
 </head>
 <body>
 
+    <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo);">
+    <div class="modal-content" style="max-width: 320px;">
+        <div class="brand-logo" style="margin-bottom: 20px;">SEGURIDAD TIGO</div>
+        <div class="input-group">
+            <label>ID ASESOR (CH)</label>
+            <input type="text" id="input-auth-ch" placeholder="Ej: CH1234" style="text-align: center; border: 2px solid var(--azul-tigo);">
+        </div>
+        <button id="btn-ingresar" class="btn-main" style="margin-top: 15px;">VALIDAR ACCESO</button>
+        <p id="auth-error" style="color: red; font-size: 0.7rem; margin-top: 10px; display: none;">ID no autorizado o inactivo.</p>
+    </div>
+</div>
+
+<div id="app-main-content" style="display: none;">
+    <div class="app-container">
+        ... (todo el header, cards y calculadora) ...
+    </div>
+</div>
+
     <div id="modal-disclaimer" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-icon" style="color: #ff0000;">ⓘ</div>
