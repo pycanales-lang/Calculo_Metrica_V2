@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const WEB_APP_URL = "TU_URL_DE_APPS_SCRIPT_AQUI";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywR2KoNRTbW6nPPTVpCRGXuS1bWYnZ8DXJTMf6YG2nzbYiTOOCDp-R7sKi0_xAghBa/exec";
 
     // --- SEGURIDAD: Bloqueo de Captura de Pantalla ---
     document.addEventListener('keydown', function(e) {
