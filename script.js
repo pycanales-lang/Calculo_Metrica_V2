@@ -108,4 +108,28 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('display-total').innerText = "Gs. " + tot.toLocaleString('es-PY');
         document.getElementById('resultados-area').classList.remove('hidden');
     };
+
+    // 1. Crear marca de agua con el nombre del vendedor validado
+function generarMarcaAgua(nombreVendedor) {
+    const wm = document.getElementById('watermark');
+    wm.innerHTML = ""; // Limpiar
+    for (let i = 0; i < 20; i++) {
+        wm.innerHTML += `<span>${nombreVendedor} - CONFIDENCIAL</span>`;
+    }
+}
+
+// 2. Detectar si el usuario cambia de pestaña o minimiza (común al intentar capturas o grabar)
+window.onblur = function() {
+    document.getElementById('app-main-content').classList.add('blur-content');
+};
+window.onfocus = function() {
+    document.getElementById('app-main-content').classList.remove('blur-content');
+};
+
+// 3. Modificar la validación para activar la marca de agua
+// (Dentro de tu función btnIngresar.onclick)
+if (data.autorizado) {
+    generarMarcaAgua(data.nombre); // El nombre que viene del Google Sheet
+    // ... resto del login
+}
 });
