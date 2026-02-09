@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tigo Commission OS v5.0</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="modal-disclaimer" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon" style="color: #ff0000;">ⓘ</div>
+            <h2>AVISO DE SISTEMA</h2>
+            <p>Los cálculos están sujetos a variaciones y políticas de ventas de la empresa. Los resultados son estimaciones referenciales.</p>
+            <button id="btn-aceptar-modal" class="btn-main">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <div id="btn-guia" class="floating-help">?</div>
+
+    <div id="modal-guia" class="modal-overlay hidden">
+        <div class="modal-content guia-content">
+            <div class="modal-header">
+                <h3>GUÍA DE CÁLCULO</h3>
+                <span id="close-guia" class="close-btn">&times;</span>
+            </div>
+            <div class="guia-body">
+                <h4>1. Valores y Efectividad</h4>
+                <p>El cálculo usa un promedio de pago por canal sobre el valor del producto:</p>
+                <ul>
+                    <li><strong>Hogar/B2B:</strong> Gs. 140.000 (65% pago).</li>
+                    <li><strong>Pospago:</strong> Gs. 75.000 (65% pago).</li>
+                    <li><strong>Prepago:</strong> Gs. 25.000 (60% pago).</li>
+                </ul>
+
+                <h4>2. Sistema Acumulativo</h4>
+                <p>La "Variable Promedio" es la suma total de los niveles <strong>M0, M1, M2, M3 y M4</strong>.</p>
+
+                <h4>3. Perfil HOME (Staff)</h4>
+                <p>Desde 31 instalaciones (Hogar+B2B), se activa la escala diferenciada (20% al 50%) y el <strong>Acelerador QTY</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="brand-logo">TIGO COMMISSION OS</div>
+            <p class="subtitle">CERTIFICACIÓN PERFIL HOME & CORRETAJE</p>
+        </header>
+
+        <div class="main-card">
+            <label>ESQUEMA DE TRABAJO</label>
+            <select id="select-esquema">
+                <option value="STAFF">MODO: STAFF (BÁSICO + VARIABLE)</option>
+                <option value="CORRETAJE">MODO: CORRETAJE (COMISIÓN PURA)</option>
+            </select>
+
+            <div class="input-grid">
+                <div class="field"><label>B2B (LLAVE)</label><input type="number" id="input-B2B" inputmode="numeric" placeholder="0"></div>
+                <div class="field"><label>HOGAR (LLAVE)</label><input type="number" id="input-HOGAR" inputmode="numeric" placeholder="0"></div>
+                <div class="field"><label>POSPAGO</label><input type="number" id="input-POSPAGO" inputmode="numeric" placeholder="0"></div>
+                <div class="field"><label>PREPAGO</label><input type="number" id="input-PREPAGO" inputmode="numeric" placeholder="0"></div>
+            </div>
+
+            <button id="btn-calcular" class="btn-main">EJECUTAR CÁLCULO</button>
+        </div>
+
+        <details class="help-section">
+            <summary>Ver Ayuda Memoria (Políticas)</summary>
+            <div id="help-content-dinamico" class="help-content">
+                </div>
+        </details>
+
+        <div id="resultados-area" class="hidden">
+            <div id="grid-detalles" class="details-container"></div>
+            <div id="alert-pospago" class="info-tag hidden">⚠️ Política Staff: Solo se comisionan hasta 3 Pospagos.</div>
+            
+            <div class="total-card">
+                <span class="total-title">MONTO ESTIMADO A CERTIFICAR</span>
+                <div id="display-total" class="total-value">Gs. 0</div>
+                <div id="display-bono" class="sub-value"></div>
+            </div>
+            
+            <button onclick="location.reload()" class="btn-reload">LIMPIAR INTERFAZ</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
