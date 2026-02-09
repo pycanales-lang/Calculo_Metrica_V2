@@ -116,28 +116,33 @@ document.addEventListener('DOMContentLoaded', function() {
         let pre = parseInt(document.getElementById('input-PREPAGO').value) || 0;
         const modo = selectEsquema.value;
 
-        const llaves = b2b + hog;
+        // --- NUEVA LÓGICA DE SUMATORIA PARA ACELERADOR (PLUS) ---
+        // Para el acelerador Staff: Suma B2B + HOGAR + (Hasta 3 Pospagos)
+        let posParaPlus = (modo === "STAFF" && posIn > 3) ? 3 : posIn;
+        const totalParaPlus = b2b + hog + posParaPlus;
+
+        // Determinar si aplica acelerador (31 o más instalaciones según imagen)
+        const acelera = (modo === "STAFF" && totalParaPlus >= 31);
         
-        // Lógica de Tasas
-        const acelera = (modo === "STAFF" && llaves >= 31);
+        // Tasas de pago según Métrica Directa HOME
         const T_STAFF = acelera ? [0.20, 0.20, 0.30, 0.30, 0.50] : [0.15, 0.15, 0.20, 0.30, 0.45];
-        const T_CORR = (llaves >= 16) ? [0.50, 0.50, 0.75, 0.75, 1.00] : (llaves >= 9 ? [0.50, 0.50, 0.50, 0.50, 0.50] : [0.30, 0.30, 0.30, 0.40, 0.50]);
+        const T_CORR = (totalParaPlus >= 16) ? [0.50, 0.50, 0.75, 0.75, 1.00] : (totalParaPlus >= 9 ? [0.50, 0.50, 0.50, 0.50, 0.50] : [0.30, 0.30, 0.30, 0.40, 0.50]);
         const tA = (modo === "STAFF") ? T_STAFF : T_CORR;
 
         const calc = (cant, val, pct, esLl) => {
             let s = 0;
-            // En Corretaje, si no hay llaves instaladas, los marginales no suman
             tA.forEach(t => { 
-                if (modo === "CORRETAJE" && !esLl && llaves === 0) s += 0; 
+                if (modo === "CORRETAJE" && !esLl && totalParaPlus === 0) s += 0; 
                 else s += (cant * val * pct * t); 
             });
             return Math.round(s);
         };
 
-        // Si es Corretaje, forzamos pospago y prepago a 0 por si quedaron valores
-        let finalPos = (modo === "CORRETAJE") ? 0 : ((posIn > 3 && modo === "STAFF") ? 3 : posIn);
-        let finalPre = (modo === "CORRETAJE") ? 0 : pre;
-
+        // --- LÓGICA DE PAGO (COMISIÓN) ---
+        // Se muestran hasta 5, pero se pagan hasta 3 en Staff
+        let posParaPago = (modo === "STAFF" && posIn > 3) ? 3 : (posIn > 5 ? 5 : posIn);
+        
+        // Alerta visual si supera el tope de pago de 3
         document.getElementById('alert-pospago').classList.toggle('hidden', !(modo === "STAFF" && posIn > 3));
 
         const r = {
@@ -145,10 +150,9 @@ document.addEventListener('DOMContentLoaded', function() {
             "HOGAR": calc(hog, VAL_HOG, PCT_HOG, true)
         };
         
-        // Solo agregar al objeto si no es Corretaje
         if (modo !== "CORRETAJE") {
-            r["POSPAGO"] = calc(finalPos, VAL_POS, PCT_POS, false);
-            r["PREPAGO"] = calc(finalPre, 25000, 0.60, false);
+            r["POSPAGO"] = calc(posParaPago, VAL_POS, PCT_POS, false);
+            r["PREPAGO"] = calc(pre, 25000, 0.60, false);
         }
 
         let tot = 0; let f = "";
@@ -158,22 +162,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (modo === "STAFF") {
-            tot += 2900000;
+            tot += 2900000; // Sueldo Fijo
             f += `<div class="row-item" style="border-top: 1px solid #333; margin-top:5px; padding-top:10px;"><span>SUELDO BÁSICO</span><strong>Gs. 2.900.000</strong></div>`;
+            
             if (acelera) {
-                let bon = llaves >= 46 ? 1800000 : llaves >= 41 ? 1500000 : llaves >= 36 ? 1000000 : 700000;
+                // Escala de Acelerador según imagen: 31-35 (700k), 36-40 (1M), 41-45 (1.5M), 46-50 (1.8M)
+                let bon = totalParaPlus >= 46 ? 1800000 : totalParaPlus >= 41 ? 1500000 : totalParaPlus >= 36 ? 1000000 : 700000;
                 tot += bon;
-                document.getElementById('display-bono').innerText = "🚀 ACELERADOR QTY: Gs. " + bon.toLocaleString('es-PY');
+                document.getElementById('display-bono').innerText = "🚀 PLUS STAFF ACTIVO (Cant: " + totalParaPlus + ")";
+                f += `<div class="row-item" style="color: #2ecc71;"><span>PLUS ACELERADOR</span><strong>Gs. ${bon.toLocaleString('es-PY')}</strong></div>`;
             } else {
                 document.getElementById('display-bono').innerText = "";
             }
         } else {
-            // Viáticos Corretaje
+            // Viáticos Corretaje según escala previa
             const vT = {6:800000, 9:900000, 15:1200000, 20:1500000, 25:1700000};
-            let vK = Object.keys(vT).reverse().find(k => llaves >= k);
+            let vK = Object.keys(vT).reverse().find(k => totalParaPlus >= k);
             let vV = vK ? vT[vK] : 0;
             tot += vV;
-            document.getElementById('display-bono').innerText = vV > 0 ? "🚚 VIÁTICO: Gs. " + vV.toLocaleString('es-PY') : "";
+            document.getElementById('display-bono').innerText = vV > 0 ? "🚚 VIÁTICO INCLUIDO" : "";
         }
 
         document.getElementById('grid-detalles').innerHTML = f;
