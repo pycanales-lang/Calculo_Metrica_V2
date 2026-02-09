@@ -32,3 +32,32 @@ input, select { width: 100%; border: 1px solid #ced4da; border-radius: 8px; padd
 .info-tag { background: #fff3cd; color: #856404; font-size: 0.75rem; padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center; }
 .hidden { display: none !important; }
 .btn-reload { width:100%; background:none; border:none; color:var(--celeste-tigo); margin-top: 15px; text-decoration: underline; cursor:pointer; }
+
+/* ... Tus estilos anteriores ... */
+
+/* Marca de agua para evitar fotos limpias */
+#watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 4rem;
+    color: rgba(0,0,0,0.03);
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+    user-select: none;
+}
+
+/* Bloqueo de impresión */
+@media print {
+    body { display: none !important; }
+}
+
+/* Evitar selección de texto */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
