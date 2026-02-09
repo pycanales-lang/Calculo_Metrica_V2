@@ -32,9 +32,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function generarMarcaAgua(nombreVendedor) {
         const wm = document.getElementById('watermark');
         if (!wm) return;
-        wm.innerHTML = "";
-        for (let i = 0; i < 20; i++) {
-            wm.innerHTML += `<span>${nombreVendedor} - CONFIDENCIAL </span>`;
+        
+        wm.innerHTML = ""; // Limpiar
+        
+        // Creamos un texto breve: Nombre + ID o solo Nombre
+        const textoSeguridad = `${nombreVendedor} • TIGO POS • `;
+        
+        // Generamos suficientes repeticiones para cubrir el fondo con espaciado
+        for (let i = 0; i < 60; i++) {
+            const span = document.createElement('span');
+            span.innerText = textoSeguridad;
+            wm.appendChild(span);
         }
     }
 
