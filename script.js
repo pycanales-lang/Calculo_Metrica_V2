@@ -46,6 +46,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+// Función para mostrar la ayuda según el esquema seleccionado
+function cargarContenidoAyuda() {
+    const modo = document.getElementById('select-esquema').value;
+    const guiaBody = document.getElementById('guia-body');
+    
+    let html = "";
+
+    if (modo === "STAFF") {
+        html = `
+            <div class="ayuda-card">
+                <h4 style="color:var(--azul-tigo); margin-top:0;">Esquema STAFF</h4>
+                <ul style="padding-left: 20px; font-size: 0.85rem; color: #444;">
+                    <li><b>Sueldo Fijo:</b> Gs. 2.900.000 incluido.</li>
+                    <li><b>Plus Acelerador:</b> Se activa con 31 llaves.</li>
+                    <li><b>Llaves para Plus:</b> Suma B2B + Hogar + (Max. 3 Pospago).</li>
+                    <li><b>Comisiones:</b> Se pagan sobre el excedente de la meta según niveles M0 a M4.</li>
+                </ul>
+                <img src="assets/politica-staff.png" style="width:100%; border-radius:10px; margin-top:10px;" alt="Tabla Staff">
+            </div>
+        `;
+    } else {
+        html = `
+            <div class="ayuda-card">
+                <h4 style="color:var(--azul-tigo); margin-top:0;">Esquema CORRETAJE</h4>
+                <ul style="padding-left: 20px; font-size: 0.85rem; color: #444;">
+                    <li><b>Viáticos:</b> Escala según instalaciones (6, 9, 15, 20 o 25).</li>
+                    <li><b>Productos:</b> Solo comisiona B2B y Hogar (Métrica Directa).</li>
+                    <li><b>Niveles:</b> Los porcentajes M0-M4 mejoran al superar las 16 instalaciones.</li>
+                </ul>
+                <img src="assets/metrica-corretaje.png" style="width:100%; border-radius:10px; margin-top:10px;" alt="Tabla Corretaje">
+            </div>
+        `;
+    }
+    
+    guiaBody.innerHTML = html;
+}
+
+// Control de apertura y cierre
+if (btnGuia) {
+    btnGuia.onclick = () => {
+        cargarContenidoAyuda(); // Cargamos el contenido justo antes de mostrar
+        modalGuia.classList.remove('hidden');
+    };
+}
+
+if (closeGuia) {
+    closeGuia.onclick = () => modalGuia.classList.add('hidden');
+}
+
+// Cerrar al hacer clic fuera del contenido blanco
+window.onclick = function(event) {
+    if (event.target == modalGuia) {
+        modalGuia.classList.add('hidden');
+    }
+};
+    
     // --- LÓGICA DE LOGIN ---
     btnIngresar.onclick = async function() {
         const ch = document.getElementById('input-auth-ch').value.trim();
