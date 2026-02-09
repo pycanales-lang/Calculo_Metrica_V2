@@ -1,39 +1,61 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. MODALES Y GUIAS
-    document.getElementById('btn-aceptar-modal').onclick = () => document.getElementById('modal-disclaimer').style.display = 'none';
-    document.getElementById('btn-guia').onclick = () => document.getElementById('modal-guia').classList.remove('hidden');
-    document.getElementById('close-guia').onclick = () => document.getElementById('modal-guia').classList.add('hidden');
+    const WEB_APP_URL = "TU_URL_DE_APPS_SCRIPT_AQUI";
 
-    // 2. LIMPIEZA AUTOMÁTICA DE CEROS
-    const inputs = document.querySelectorAll('input[type="number"]');
-    inputs.forEach(input => {
-        input.onfocus = function() { if (this.value == "0") this.value = ""; };
-        input.onblur = function() { if (this.value == "") this.value = "0"; };
+    // --- SEGURIDAD: Bloqueo de Captura de Pantalla ---
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'PrintScreen' || (e.ctrlKey && e.pKey)) {
+            alert('Captura de pantalla no permitida por seguridad corporativa.');
+            document.body.style.display = 'none'; // Desaparece el contenido
+            setTimeout(() => { document.body.style.display = 'block'; }, 1000);
+            e.preventDefault();
+        }
     });
 
-    // 3. AYUDA DINÁMICA
+    // --- LÓGICA DE LOGIN ---
+    const loginScreen = document.getElementById('login-screen');
+    const mainContent = document.getElementById('app-main-content');
+    const btnIngresar = document.getElementById('btn-ingresar');
+    const errorMsg = document.getElementById('auth-error');
+
+    btnIngresar.onclick = async function() {
+        const ch = document.getElementById('input-auth-ch').value.trim();
+        if(!ch) return;
+        
+        btnIngresar.innerText = "VERIFICANDO...";
+        try {
+            const res = await fetch(`${WEB_APP_URL}?action=validarCH&ch=${ch}`);
+            const data = await res.json();
+            if (data.autorizado) {
+                loginScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+                document.getElementById('saludo-vendedor').innerText = `ASESOR: ${data.nombre}`;
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        } catch(e) { alert("Error de red"); }
+        btnIngresar.innerText = "VALIDAR Y ENTRAR";
+    };
+
+    // --- MOTOR DE CÁLCULO (Todo lo que ya teníamos) ---
     const selectEsquema = document.getElementById('select-esquema');
     const helpContent = document.getElementById('help-content-dinamico');
 
     function actualizarAyuda() {
         if (selectEsquema.value === "STAFF") {
-            helpContent.innerHTML = `<div class="img-container"><span>STAFF NIVELES</span><img src="assets/politica-staff.png"></div><div class="img-container"><span>ACELERADOR</span><img src="assets/acelerador.png"></div>`;
+            helpContent.innerHTML = `<div class="img-container"><span>STAFF</span><img src="assets/politica-staff.png"></div>`;
         } else {
-            helpContent.innerHTML = `<div class="img-container"><span>MÉTRICA CORRETAJE M3+</span><img src="assets/metrica-corretaje.png"></div>`;
+            helpContent.innerHTML = `<div class="img-container"><span>CORRETAJE M3+</span><img src="assets/metrica-corretaje.png"></div>`;
         }
     }
     selectEsquema.onchange = actualizarAyuda;
     actualizarAyuda();
 
-    // 4. MOTOR DE CÁLCULO
     document.getElementById('btn-calcular').onclick = function() {
-        // Variables Flexibles
         const VAL_HOG = parseInt(document.getElementById('val-hogar').value) || 0;
         const PCT_HOG = (parseInt(document.getElementById('pct-hogar').value) || 0) / 100;
         const VAL_POS = parseInt(document.getElementById('val-pos').value) || 0;
         const PCT_POS = (parseInt(document.getElementById('pct-pos').value) || 0) / 100;
 
-        // Cantidades
         let b2b = parseInt(document.getElementById('input-B2B').value) || 0;
         let hog = parseInt(document.getElementById('input-HOGAR').value) || 0;
         let posIn = parseInt(document.getElementById('input-POSPAGO').value) || 0;
@@ -43,54 +65,47 @@ document.addEventListener('DOMContentLoaded', function() {
         const llaves = b2b + hog;
         const acelera = (modo === "STAFF" && llaves >= 31);
         
-        // Tasas M0-M4
         const T_STAFF = acelera ? [0.20, 0.20, 0.30, 0.30, 0.50] : [0.15, 0.15, 0.20, 0.30, 0.45];
         const T_CORR = (llaves >= 16) ? [0.50, 0.50, 0.75, 0.75, 1.00] : (llaves >= 9 ? [0.50, 0.50, 0.50, 0.50, 0.50] : [0.30, 0.30, 0.30, 0.40, 0.50]);
-        const tActual = (modo === "STAFF") ? T_STAFF : T_CORR;
+        const tA = (modo === "STAFF") ? T_STAFF : T_CORR;
 
-        const calc = (cant, val, pct, esLlave) => {
-            let sub = 0;
-            tActual.forEach(t => {
-                if (modo === "CORRETAJE" && !esLlave && llaves === 0) sub += 0;
-                else sub += (cant * val * pct * t);
-            });
-            return Math.round(sub);
+        const calc = (cant, val, pct, esLl) => {
+            let s = 0;
+            tA.forEach(t => { if (modo === "CORRETAJE" && !esLl && llaves === 0) s+=0; else s += (cant * val * pct * t); });
+            return Math.round(s);
         };
 
-        let posCalc = (modo === "STAFF" && posIn > 3) ? 3 : posIn;
+        let posC = (modo === "STAFF" && posIn > 3) ? 3 : posIn;
         document.getElementById('alert-pospago').classList.toggle('hidden', !(modo === "STAFF" && posIn > 3));
 
-        const res = {
+        const r = {
             "B2B": calc(b2b, VAL_HOG, PCT_HOG, true),
-            "HOGAR": calc(hog, VAL_HOG, PCT_HOG, true),
-            "POSPAGO": calc(posCalc, VAL_POS, PCT_POS, false),
-            "PREPAGO": calc(pre, 25000, 0.60, false)
+            "HOG": calc(hog, VAL_HOG, PCT_HOG, true),
+            "POS": calc(posC, VAL_POS, PCT_POS, false),
+            "PRE": calc(pre, 25000, 0.60, false)
         };
 
-        let total = 0; let filas = "";
-        for (let p in res) {
-            total += res[p];
-            filas += `<div class="row-item"><span>${p}</span><strong>Gs. ${res[p].toLocaleString('es-PY')}</strong></div>`;
-        }
+        let tot = 0; let f = "";
+        for (let k in r) { tot += r[k]; f += `<div class="row-item"><span>${k}</span><strong>Gs. ${r[k].toLocaleString('es-PY')}</strong></div>`; }
 
         if (modo === "STAFF") {
-            total += 2900000;
-            filas += `<div class="row-item" style="font-weight:bold;"><span>BÁSICO</span><strong>Gs. 2.900.000</strong></div>`;
+            tot += 2900000;
+            f += `<div class="row-item"><span>BÁSICO</span><strong>Gs. 2.900.000</strong></div>`;
             if (acelera) {
                 let bon = llaves >= 46 ? 1800000 : llaves >= 41 ? 1500000 : llaves >= 36 ? 1000000 : 700000;
-                total += bon;
-                document.getElementById('display-bono').innerText = "🚀 ACELERADOR: Gs. " + bon.toLocaleString('es-PY');
-            } else document.getElementById('display-bono').innerText = "";
+                tot += bon;
+                document.getElementById('display-bono').innerText = "🚀 ACELERADOR QTY ACTIVO";
+            }
         } else {
-            const vT = {6:800000, 7:900000, 8:1000000, 9:900000, 12:1000000, 15:1200000, 16:1200000, 20:1500000, 25:1700000};
-            let vK = Object.keys(vT).map(Number).filter(k => k <= llaves).pop();
+            const vT = {6:800000, 9:900000, 15:1200000, 20:1500000, 25:1700000};
+            let vK = Object.keys(vT).reverse().find(k => llaves >= k);
             let vV = vK ? vT[vK] : 0;
-            total += vV;
-            document.getElementById('display-bono').innerText = vV > 0 ? "🚚 VIÁTICO: Gs. " + vV.toLocaleString('es-PY') : "";
+            tot += vV;
+            document.getElementById('display-bono').innerText = vV > 0 ? "🚚 VIÁTICO INCLUIDO" : "";
         }
 
-        document.getElementById('grid-detalles').innerHTML = filas;
-        document.getElementById('display-total').innerText = "Gs. " + total.toLocaleString('es-PY');
+        document.getElementById('grid-detalles').innerHTML = f;
+        document.getElementById('display-total').innerText = "Gs. " + tot.toLocaleString('es-PY');
         document.getElementById('resultados-area').classList.remove('hidden');
     };
 });
