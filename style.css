@@ -90,3 +90,32 @@ body {
 @media print {
     #watermark { display: none; }
 }
+
+.ayuda-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    border-left: 4px solid var(--celeste-tigo);
+}
+
+.ayuda-card ul li {
+    margin-bottom: 8px;
+}
+
+/* Asegurar que el modal se vea sobre todo */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}
