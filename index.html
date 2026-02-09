@@ -3,107 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculo Comisiones</title>
+    <title>Tigo Commission OS v6.0 - Secure</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
-<body>
-
-    <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo);">
-    <div class="modal-content" style="max-width: 320px;">
-        <div class="brand-logo" style="margin-bottom: 20px;">SEGURIDAD TIGO</div>
-        <div class="input-group">
-            <label>ID ASESOR (CH)</label>
-            <input type="text" id="input-auth-ch" placeholder="Ej: CH1234" style="text-align: center; border: 2px solid var(--azul-tigo);">
-        </div>
-        <button id="btn-ingresar" class="btn-main" style="margin-top: 15px;">VALIDAR ACCESO</button>
-        <p id="auth-error" style="color: red; font-size: 0.7rem; margin-top: 10px; display: none;">ID no autorizado o inactivo.</p>
-    </div>
-</div>
-
-<div id="app-main-content" style="display: none;">
-    <div class="app-container">
-        ... (todo el header, cards y calculadora) ...
-    </div>
-</div>
-
-    <div id="modal-disclaimer" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-icon" style="color: #ff0000;">ⓘ</div>
-            <h2>IMPORTANTE</h2>
-            <p>Estos cálculos son una proyección estimada y pueden variar según los criterios de medición y las políticas comerciales vigentes.</p>
-            <button id="btn-aceptar-modal" class="btn-main">ENTENDIDO</button>
+<body oncontextmenu="return false;"> <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo); z-index: 2000;">
+        <div class="modal-content" style="max-width: 350px;">
+            <div class="brand-logo" style="margin-bottom: 20px;">ACCESO RESTRINGIDO</div>
+            <div class="input-group">
+                <label>ID VENDEDOR (CH)</label>
+                <input type="text" id="input-auth-ch" placeholder="Ingrese su ID" style="text-align: center; border: 2px solid var(--azul-tigo);">
+            </div>
+            <button id="btn-ingresar" class="btn-main">VALIDAR Y ENTRAR</button>
+            <p id="auth-error" style="color: red; font-size: 0.7rem; margin-top: 10px; display: none;">ID incorrecto o vendedor Inactivo.</p>
         </div>
     </div>
 
-    <div id="btn-guia" class="floating-help">?</div>
+    <div id="app-main-content" style="display: none;">
+        <div id="watermark">CONFIDENCIAL - TIGO</div>
+        
+        <div id="btn-guia" class="floating-help">?</div>
 
-    <div id="modal-guia" class="modal-overlay hidden">
-        <div class="modal-content guia-content">
-            <div class="modal-header">
-                <h3>GUÍA DE CÁLCULO</h3>
-                <span id="close-guia" class="close-btn">&times;</span>
-            </div>
-            <div class="guia-body">
-                <h4>Efectividad y Valores</h4>
-                <p>El sistema usa por defecto el <strong>65% de pago</strong>. Ahora puedes ajustarlo en "Configuración" si tus facturas pagadas varían.</p>
-                <h4>Niveles</h4>
-                <p>La comisión es la suma de los 5 niveles (M0 a M4).</p>
-            </div>
-        </div>
-    </div>
+        <div class="app-container">
+            <header>
+                <div class="brand-logo">TIGO COMMISSION OS</div>
+                <p id="saludo-vendedor" class="subtitle">CERTIFICACIÓN DE RESULTADOS</p>
+            </header>
 
-    <div class="app-container">
-        <header>
-            <div class="brand-logo">CALCULA TUS COMISIONES</div>
-            <p class="subtitle">CALCULO ESTIMADO PARA HOME & CORRETAJE</p>
-        </header>
+            <div class="main-card">
+                <label>ESQUEMA DE TRABAJO</label>
+                <select id="select-esquema">
+                    <option value="STAFF">MODO: STAFF (BÁSICO + VARIABLE)</option>
+                    <option value="CORRETAJE">MODO: CORRETAJE</option>
+                </select>
 
-        <div class="main-card">
-            <label>CANAL</label>
-            <select id="select-esquema">
-                <option value="STAFF">STAFF (FIJO + VARIABLE)</option>
-                <option value="CORRETAJE">CORRETAJE (VIATICO + VARIABLE)</option>
-            </select>
-
-            <div class="input-grid">
-                <div class="field"><label>B2B (LLAVE)</label><input type="number" id="input-B2B" placeholder="0"></div>
-                <div class="field"><label>HOGAR (LLAVE)</label><input type="number" id="input-HOGAR" placeholder="0"></div>
-                <div class="field"><label>POSPAGO</label><input type="number" id="input-POSPAGO" placeholder="0"></div>
-                <div class="field"><label>PREPAGO</label><input type="number" id="input-PREPAGO" placeholder="0"></div>
-            </div>
-
-            <details class="advanced-settings">
-                <summary>⚙️ Configuración de Auditoría (Valores y %)</summary>
-                <div class="settings-grid">
-                    <div class="set-row"><span>Val. Hogar/B2B:</span><input type="number" id="val-hogar" value="140000"></div>
-                    <div class="set-row"><span>% Pago Hogar:</span><input type="number" id="pct-hogar" value="65"></div>
-                    <div class="set-row"><span>Val. Pospago:</span><input type="number" id="val-pos" value="75000"></div>
-                    <div class="set-row"><span>% Pago Pos:</span><input type="number" id="pct-pos" value="65"></div>
+                <div class="input-grid">
+                    <div class="field"><label>B2B (LLAVE)</label><input type="number" id="input-B2B" placeholder="0"></div>
+                    <div class="field"><label>HOGAR (LLAVE)</label><input type="number" id="input-HOGAR" placeholder="0"></div>
+                    <div class="field"><label>POSPAGO</label><input type="number" id="input-POSPAGO" placeholder="0"></div>
+                    <div class="field"><label>PREPAGO</label><input type="number" id="input-PREPAGO" placeholder="0"></div>
                 </div>
+
+                <details class="advanced-settings">
+                    <summary>⚙️ Ajustes de Auditoría (% y Valores)</summary>
+                    <div class="settings-grid">
+                        <div class="set-row"><span>Val. Hogar:</span><input type="number" id="val-hogar" value="140000"></div>
+                        <div class="set-row"><span>% Pago Hogar:</span><input type="number" id="pct-hogar" value="65"></div>
+                        <div class="set-row"><span>Val. Pospago:</span><input type="number" id="val-pos" value="75000"></div>
+                        <div class="set-row"><span>% Pago Pos:</span><input type="number" id="pct-pos" value="65"></div>
+                    </div>
+                </details>
+
+                <button id="btn-calcular" class="btn-main">CALCULAR COMISIONES</button>
+            </div>
+
+            <details class="help-section">
+                <summary>Políticas e Imágenes</summary>
+                <div id="help-content-dinamico"></div>
             </details>
 
-            <button id="btn-calcular" class="btn-main">EJECUTAR CÁLCULO</button>
-        </div>
-
-        <details class="help-section">
-            <summary>Ver Ayuda Memoria (Políticas)</summary>
-            <div id="help-content-dinamico" class="help-content"></div>
-        </details>
-
-        <div id="resultados-area" class="hidden">
-            <div id="grid-detalles" class="details-container"></div>
-            <div id="alert-pospago" class="info-tag hidden">⚠️ Política Staff: Tope de 3 Pospagos aplicado.</div>
-            
-            <div class="total-card">
-                <span class="total-title">MONTO ESTIMADO🔥</span>
-                <div id="display-total" class="total-value">Gs. 0</div>
-                <div id="display-bono" class="sub-value"></div>
+            <div id="resultados-area" class="hidden no-print">
+                <div id="grid-detalles" class="details-container"></div>
+                <div id="alert-pospago" class="info-tag hidden">⚠️ Política Staff: Tope de 3 Pospagos aplicado.</div>
+                
+                <div class="total-card">
+                    <span class="total-title">TOTAL ESTIMADO</span>
+                    <div id="display-total" class="total-value">Gs. 0</div>
+                    <div id="display-bono" class="sub-value"></div>
+                </div>
+                <button onclick="location.reload()" class="btn-reload">CERRAR SESIÓN / LIMPIAR</button>
             </div>
-            <button onclick="location.reload()" class="btn-reload">LIMPIAR INTERFAZ</button>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
