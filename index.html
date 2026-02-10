@@ -7,15 +7,25 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos de emergencia para asegurar que el login se vea sí o sí */
+        /* Estilos críticos para el Login (Evita el descuadre) */
         #login-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #00377d; /* Azul Tigo */
-            display: flex !important; /* Forzamos visibilidad */
+            background-color: #00377d; 
+            display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 10000;
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         .hidden { display: none !important; }
     </style>
@@ -25,18 +35,21 @@
     <div id="watermark"></div>
 
     <div id="login-screen">
-        <div class="main-card" style="max-width: 320px; text-align: center;">
-            <h2 style="font-family: 'Orbitron', sans-serif; color: #00377d; font-size: 1.1rem; margin-bottom: 20px;">ACCESO ASESOR</h2>
+        <div class="login-card">
+            <h2 style="font-family: 'Orbitron', sans-serif; color: #00377d; font-size: 1.2rem; margin-bottom: 25px; letter-spacing: 1px;">ACCESO ASESOR</h2>
             
             <div style="text-align: left; margin-bottom: 20px;">
-                <label class="label-title">INGRESE SU CH_VENDEDOR</label>
-                <input type="text" id="input-auth-ch" placeholder="Ej: 100041" style="text-align: center; border: 2px solid #00a1de;">
+                <label style="font-size: 0.7rem; font-weight: bold; color: #00a1de; display: block; margin-bottom: 8px;">INGRESE SU CH_VENDEDOR</label>
+                <input type="text" id="input-auth-ch" placeholder="ID Asesor" 
+                       style="width: 100%; padding: 12px; border: 2px solid #00a1de; border-radius: 12px; text-align: center; font-size: 1.1rem; outline: none; background: #f0f7ff;">
             </div>
 
-            <button id="btn-ingresar" class="btn-main">VALIDAR Y ENTRAR</button>
+            <button id="btn-ingresar" class="btn-main" style="width: 100%; padding: 15px; border-radius: 12px; background: #00377d; color: white; border: none; font-weight: bold; cursor: pointer;">
+                VALIDAR Y ENTRAR
+            </button>
             
             <p id="auth-error" style="color: #e74c3c; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: bold;">
-                ⚠️ ID no encontrado o inactivo.
+                ⚠️ ID no encontrado o incorrecto.
             </p>
         </div>
     </div>
@@ -45,9 +58,9 @@
         <div id="btn-guia" class="floating-help">?</div>
 
         <div class="app-container">
-            <header>
-                <h1>CALCULO COMISIÓN</h1>
-                <div id="saludo-vendedor" class="asesor-tag">ASESOR: ---</div>
+            <header style="text-align: center; margin-bottom: 15px;">
+                <h1 style="font-family: 'Orbitron', sans-serif; color: #00377d; font-size: 1.4rem; margin: 0;">TIGO COMMISSION OS</h1>
+                <div id="saludo-vendedor" class="asesor-tag" style="color: #00a1de; font-weight: bold; font-size: 0.8rem;">ASESOR: ---</div>
             </header>
 
             <div class="main-card">
@@ -59,10 +72,20 @@
 
                 <div class="grid-inputs">
                     <div><span class="label-title">B2B (Fijo)</span><input type="number" id="input-B2B" value="0"></div>
-                    <div><span class="label-title)HOGAR (Fijo)</span><input type="number" id="input-HOGAR" value="0"></div>
+                    <div><span class="label-title">HOGAR (Fijo)</span><input type="number" id="input-HOGAR" value="0"></div>
                     <div><span class="label-title">POSPAGO</span><input type="number" id="input-POSPAGO" value="0"></div>
                     <div><span class="label-title">PREPAGO</span><input type="number" id="input-PREPAGO" value="0"></div>
                 </div>
+
+                <details style="margin: 10px 0; color: #00a1de; font-size: 0.8rem; cursor: pointer;">
+                    <summary>⚙️ Ajustes de Auditoría (% y Valores)</summary>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 10px; margin-top: 5px;">
+                        <input type="number" id="val-hogar" value="140000" title="Valor Hogar">
+                        <input type="number" id="pct-hogar" value="65" title="% Pago Hogar">
+                        <input type="number" id="val-pos" value="75000" title="Valor Pospago">
+                        <input type="number" id="pct-pos" value="65" title="% Pago Pos">
+                    </div>
+                </details>
 
                 <button id="btn-calcular" class="btn-main">CALCULAR RESULTADOS</button>
             </div>
@@ -70,22 +93,30 @@
             <div id="resultados-area" class="hidden">
                 <div id="grid-detalles" class="res-card"></div>
 
-                <div class="total-box">
-                    <span style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;">MONTO ESTIMADO 🔥</span>
-                    <span id="display-total" class="total-amount">Gs. 0</span>
-                    <div id="display-bono" style="font-size: 0.7rem; margin-top: 5px; opacity: 0.9;"></div>
+                <div id="alert-pospago" class="hidden" style="color: #856404; background: #fff3cd; padding: 10px; border-radius: 10px; margin: 10px 0; font-size: 0.75rem; text-align: center; border: 1px solid #ffeeba;">
+                    ⚠️ Politica Staff: Tope de 3 Pospagos aplicado.
                 </div>
+
+                <div class="total-box">
+                    <span style="font-size: 0.8rem; font-weight: bold;">MONTO ESTIMADO 🔥</span>
+                    <span id="display-total" class="total-amount">Gs. 0</span>
+                    <div id="display-bono" style="font-size: 0.7rem; margin-top: 5px; font-weight: bold;"></div>
+                </div>
+                
+                <p style="text-align: center; margin-top: 15px;">
+                    <a href="javascript:location.reload()" style="color: #00a1de; text-decoration: underline; font-size: 0.8rem; font-weight: bold;">LIMPIAR INTERFAZ</a>
+                </p>
             </div>
         </div>
     </div>
 
     <div id="modal-guia" class="modal-overlay hidden">
         <div class="modal-content">
-            <div style="background: #00377d; color: white; padding: 15px; display: flex; justify-content: space-between;">
-                <span>AYUDA</span>
-                <span id="close-guia" style="cursor:pointer;">&times;</span>
+            <div style="background: #00377d; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'Orbitron';">AYUDA MEMORIA</span>
+                <span id="close-guia" style="cursor:pointer; font-size: 1.5rem;">&times;</span>
             </div>
-            <div id="guia-body" style="padding: 20px;"></div>
+            <div id="guia-body" style="padding: 20px; font-size: 0.9rem;"></div>
         </div>
     </div>
 
