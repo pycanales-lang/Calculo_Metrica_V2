@@ -2,12 +2,13 @@
     --azul-tigo: #00377d;
     --celeste-tigo: #00a1de;
     --blanco: #ffffff;
-    --gris-claro: #f8f9fa;
+    --fondo: #f0f4f8;
+    --gris-borde: #e1e8ef;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
+    background-color: var(--fondo);
     margin: 0;
     display: flex;
     justify-content: center;
@@ -16,138 +17,70 @@ body {
 
 /* MARCA DE AGUA DISCRETA */
 #watermark {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-around;
-    justify-content: space-around;
-    opacity: 0.05; /* Muy tenue como en tu imagen */
-    pointer-events: none;
-    z-index: 9999;
-    transform: rotate(-30deg);
-    font-size: 0.7rem;
-    color: #333;
+    position: fixed; top: 0; left: 0; width: 180%; height: 180%;
+    display: flex; flex-wrap: wrap; align-content: space-around; justify-content: space-around;
+    opacity: 0.04; pointer-events: none; z-index: 9999;
+    transform: rotate(-25deg); font-size: 0.65rem; color: #000;
 }
 
-.app-container {
-    width: 100%;
-    max-width: 400px;
-}
+.app-container { width: 100%; max-width: 400px; }
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
+header { text-align: center; margin-bottom: 20px; }
+header h1 { color: var(--azul-tigo); font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin: 0; }
+.asesor-tag { color: var(--celeste-tigo); font-size: 0.75rem; font-weight: bold; margin-top: 5px; }
 
-header h1 {
-    color: var(--azul-tigo);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    margin-bottom: 5px;
-}
-
-.asesor-tag {
-    color: var(--celeste-tigo);
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-/* LA CARD BLANCA PRINCIPAL */
+/* TARJETA PRINCIPAL */
 .main-card {
     background: var(--blanco);
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 1px solid #e1e4e8;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border: 1px solid var(--gris-borde);
 }
 
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
+.label-title { font-size: 0.7rem; font-weight: 800; color: var(--azul-tigo); margin-bottom: 5px; display: block; }
 
 select, input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
-    font-size: 1rem;
+    width: 100%; padding: 12px; border: 1.5px solid var(--gris-borde);
+    border-radius: 12px; font-size: 1rem; margin-bottom: 15px; outline: none;
 }
 
-.grid-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
+.grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-/* BOTÓN CALCULAR AZUL TIGO */
 .btn-main {
-    width: 100%;
-    padding: 15px;
-    background-color: var(--azul-tigo);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    margin-top: 10px;
-    cursor: pointer;
+    width: 100%; padding: 15px; background: var(--azul-tigo); color: white;
+    border: none; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer;
 }
 
-/* BOTÓN FLOTANTE DE AYUDA */
-.floating-help {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 55px;
-    height: 55px;
-    background: var(--celeste-tigo);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,161,222,0.4);
-    z-index: 2000;
-    cursor: pointer;
-    border: 2px solid white;
-}
-
-/* RESULTADOS */
+/* RESULTADOS ORDENADOS (Como la imagen) */
 .res-card {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
+    background: white; border-radius: 15px; margin-top: 15px;
+    border: 1px solid var(--gris-borde); overflow: hidden;
 }
 
+.row-item {
+    display: flex; justify-content: space-between; padding: 12px 15px;
+    border-bottom: 1px solid var(--gris-borde); font-size: 0.9rem;
+}
+
+.row-item span { color: var(--azul-tigo); font-weight: 500; }
+.row-item strong { color: var(--azul-tigo); }
+
+/* CAJA DE MONTO ESTIMADO */
 .total-box {
-    background: var(--azul-tigo);
-    color: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    margin-top: 20px;
+    background: var(--azul-tigo); color: white; padding: 20px;
+    border-radius: 15px; text-align: center; margin-top: 15px;
 }
 
-.total-amount {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    display: block;
+.total-amount { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; display: block; margin-top: 5px; }
+
+/* BOTÓN FLOTANTE */
+.floating-help {
+    position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
+    background: var(--celeste-tigo); color: white; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 2000; cursor: pointer;
 }
 
 .hidden { display: none !important; }
