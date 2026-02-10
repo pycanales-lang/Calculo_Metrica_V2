@@ -1,7 +1,26 @@
-:root { --azul-tigo: #00377d; --celeste-tigo: #00a1de; --gris: #f4f7f9; }
-body { font-family: 'Roboto', sans-serif; background: var(--gris); margin: 0; padding: 10px; overflow-x: hidden; }
+:root {
+    --azul-tigo: #00377d;
+    --azul-oscuro: #001e44;
+    --celeste-tigo: #00a1de;
+    --blanco: #ffffff;
+    --gris-fondo: #f4f7f9;
+    --degradado-tigo: linear-gradient(135deg, #00377d 0%, #00a1de 100%);
+}
 
-/* MARCA DE AGUA PROFESIONAL */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--gris-fondo);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* MARCA DE AGUA ESTÉTICA */
 #watermark {
     position: fixed; top: 0; left: 0; width: 150vw; height: 150vh;
     display: flex; flex-wrap: wrap; justify-content: space-between; align-content: space-around;
@@ -10,29 +29,127 @@ body { font-family: 'Roboto', sans-serif; background: var(--gris); margin: 0; pa
     gap: 80px; user-select: none;
 }
 
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 15px;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.brand-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--azul-tigo);
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: var(--celeste-tigo);
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* CARDS PRINCIPALES */
+.main-card {
+    background: var(--blanco);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border-top: 5px solid var(--celeste-tigo);
+}
+
+label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--azul-oscuro);
+}
+
+select, input {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #e1e8ef;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+select:focus, input:focus {
+    border-color: var(--celeste-tigo);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* BOTONES */
+.btn-main {
+    background: var(--degradado-tigo);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 161, 222, 0.3);
+}
+
+/* RESULTADOS */
+.total-card {
+    background: var(--azul-tigo);
+    background: var(--degradado-tigo);
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 55, 125, 0.2);
+}
+
+.total-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.row-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+/* MODALES Y AYUDA */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center;
+    background: rgba(0, 30, 68, 0.9); display: flex; justify-content: center; align-items: center;
 }
 
-.modal-content { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.modal-content {
+    background: white; border-radius: 25px; width: 90%; max-width: 380px;
+    padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
 
 .floating-help {
-    position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
+    position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
     background: var(--celeste-tigo); color: white; border-radius: 50%;
     display: flex; justify-content: center; align-items: center; font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; z-index: 2000;
+    box-shadow: 0 5px 15px rgba(0, 161, 222, 0.4); z-index: 2000; font-size: 1.2rem;
 }
 
+.blur-content { filter: blur(10px); }
 .hidden { display: none !important; }
-.blur-content { filter: blur(8px); }
-
-/* App Container y Cards se mantienen igual que tu versión anterior */
-.app-container { max-width: 450px; margin: 0 auto; }
-.main-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-.btn-main { width: 100%; padding: 15px; background: var(--azul-tigo); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-.total-card { background: var(--azul-tigo); color: white; padding: 20px; border-radius: 12px; margin-top: 15px; text-align: center; }
-.total-value { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; margin-top: 5px; }
-
-.ayuda-card h4 { margin: 0 0 10px 0; color: var(--azul-tigo); border-left: 4px solid var(--celeste-tigo); padding-left: 10px; }
-.ayuda-card ul { padding-left: 18px; font-size: 0.85rem; line-height: 1.4; }
