@@ -28,23 +28,28 @@ document.addEventListener('DOMContentLoaded', function() {
     window.onfocus = () => mainContent.classList.remove('blur-content');
 
     // --- LOGIN ---
-    btnIngresar.onclick = async function() {
+        btnIngresar.onclick = async function() {
         const ch = document.getElementById('input-auth-ch').value.trim();
         if(!ch) return;
         btnIngresar.innerText = "VERIFICANDO...";
+        errorMsg.style.display = 'none';
+        
         try {
             const res = await fetch(`${WEB_APP_URL}?action=validarCH&ch=${ch}`);
             const data = await res.json();
             if (data.autorizado) {
                 generarMarcaAgua(data.nombre);
-                loginScreen.style.display = 'none';
-                mainContent.style.display = 'block';
+                document.getElementById('login-screen').classList.add('hidden'); // OCULTA EL AZUL
+                document.getElementById('app-main-content').classList.remove('hidden'); // MUESTRA LA CALCU
                 document.getElementById('saludo-vendedor').innerText = `ASESOR: ${data.nombre}`;
             } else {
                 errorMsg.style.display = 'block';
+                btnIngresar.innerText = "VALIDAR Y ENTRAR";
             }
-        } catch(e) { alert("Error de conexión"); }
-        btnIngresar.innerText = "VALIDAR Y ENTRAR";
+        } catch(e) { 
+            alert("Error de conexión con el servidor"); 
+            btnIngresar.innerText = "VALIDAR Y ENTRAR";
+        }
     };
 
     // --- AYUDA DINÁMICA ---
