@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculador Comision</title>
+    <title>Tigo Commission OS - Secure v6.0</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -13,13 +13,17 @@
 
     <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo); z-index: 5000;">
         <div class="modal-content" style="max-width: 350px;">
-            <div class="brand-logo" style="margin-bottom: 20px;">ACCESO ASESORES</div>
-            <div class="input-group">
-                <label>ID VENDEDOR (CH)</label>
-                <input type="text" id="input-auth-ch" placeholder="Ingrese su ID" style="text-align: center; border: 2px solid var(--azul-tigo);">
+            <div style="font-family: 'Orbitron', sans-serif; color: var(--azul-tigo); font-weight: bold; margin-bottom: 20px;">
+                ACCESO RESTRINGIDO
+            </div>
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="font-size: 0.7rem;">ID VENDEDOR (CH)</label>
+                <input type="text" id="input-auth-ch" placeholder="Ingrese su ID" style="text-align: center; border: 2px solid #ddd;">
             </div>
             <button id="btn-ingresar" class="btn-main">VALIDAR Y ENTRAR</button>
-            <p id="auth-error" style="color: #ff4d4d; font-size: 0.75rem; margin-top: 15px; display: none; font-weight: bold;">⚠️ ID incorrecto o vendedor Inactivo.</p>
+            <p id="auth-error" style="color: #ff4d4d; font-size: 0.75rem; margin-top: 15px; display: none; font-weight: bold;">
+                ⚠️ ID incorrecto o vendedor Inactivo.
+            </p>
         </div>
     </div>
 
@@ -29,60 +33,83 @@
 
         <div class="app-container">
             <header>
-                <div class="brand-logo">CALCULADORA</div>
-                <p id="saludo-vendedor" class="subtitle">RESULTADOS ESTIMADOS</p>
+                <h1 style="font-family: 'Orbitron', sans-serif; color: var(--azul-tigo); font-size: 1.4rem; margin: 0;">TIGO COMMISSION OS</h1>
+                <div id="saludo-vendedor" style="color: var(--celeste-tigo); font-size: 0.8rem; font-weight: bold; margin-top: 5px;">ASESOR: VERIFICANDO...</div>
             </header>
 
             <div class="main-card">
-                <label>CANAL</label>
-                <select id="select-esquema">
-                    <option value="STAFF">STAFF (BÁSICO + VARIABLE)</option>
-                    <option value="CORRETAJE">CORRETAJE</option>
-                </select>
-
-                <div class="input-grid">
-                    <div class="field"><label>B2B (Fijo)</label><input type="number" id="input-B2B" placeholder="0"></div>
-                    <div class="field"><label>HOGAR (Fijo)</label><input type="number" id="input-HOGAR" placeholder="0"></div>
-                    <div class="field"><label>POSPAGO</label><input type="number" id="input-POSPAGO" placeholder="0"></div>
-                    <div class="field"><label>PREPAGO</label><input type="number" id="input-PREPAGO" placeholder="0"></div>
+                <div style="margin-bottom: 15px;">
+                    <label>ESQUEMA DE TRABAJO</label>
+                    <select id="select-esquema">
+                        <option value="STAFF">MODO: STAFF (BÁSICO + VARIABLE)</option>
+                        <option value="CORRETAJE">MODO: CORRETAJE</option>
+                    </select>
                 </div>
 
-                <details class="advanced-settings">
-                    <summary>⚙️ Ajustes de Auditoría (% y Valores)</summary>
-                    <div class="settings-grid">
-                        <div class="set-row"><span>Val. Hogar:</span><input type="number" id="val-hogar" value="140000"></div>
-                        <div class="set-row"><span>% Pago Hogar:</span><input type="number" id="pct-hogar" value="65"></div>
-                        <div class="set-row"><span>Val. Pospago:</span><input type="number" id="val-pos" value="75000"></div>
-                        <div class="set-row"><span>% Pago Pos:</span><input type="number" id="pct-pos" value="65"></div>
+                <div class="grid-inputs">
+                    <div>
+                        <label>B2B (LLAVE)</label>
+                        <input type="number" id="input-B2B" value="0">
+                    </div>
+                    <div>
+                        <label>HOGAR (LLAVE)</label>
+                        <input type="number" id="input-HOGAR" value="0">
+                    </div>
+                    <div>
+                        <label>POSPAGO</label>
+                        <input type="number" id="input-POSPAGO" value="0">
+                    </div>
+                    <div>
+                        <label>PREPAGO</label>
+                        <input type="number" id="input-PREPAGO" value="0">
+                    </div>
+                </div>
+
+                <details style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+                    <summary style="font-size: 0.75rem; color: var(--celeste-tigo); cursor: pointer; font-weight: bold;">
+                        ⚙️ Ajustes de Auditoría (% y Valores)
+                    </summary>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #f9f9f9; border-radius: 10px; margin-top: 5px;">
+                        <div><label style="font-size: 0.6rem;">Val. Hogar</label><input type="number" id="val-hogar" value="140000" style="padding: 5px; font-size: 0.8rem;"></div>
+                        <div><label style="font-size: 0.6rem;">% Pago Hogar</label><input type="number" id="pct-hogar" value="65" style="padding: 5px; font-size: 0.8rem;"></div>
+                        <div><label style="font-size: 0.6rem;">Val. Pospago</label><input type="number" id="val-pos" value="75000" style="padding: 5px; font-size: 0.8rem;"></div>
+                        <div><label style="font-size: 0.6rem;">% Pago Pos</label><input type="number" id="pct-pos" value="65" style="padding: 5px; font-size: 0.8rem;"></div>
                     </div>
                 </details>
 
-                <button id="btn-calcular" class="btn-main">CALCULAR COMISIONES</button>
+                <button id="btn-calcular" class="btn-main" style="margin-top: 20px;">CALCULAR COMISIONES</button>
             </div>
 
             <div id="resultados-area" class="hidden">
-                <div id="grid-detalles" class="details-container"></div>
-                <div id="alert-pospago" class="info-tag hidden" style="color: #e74c3c; background: #fdeaea; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.8rem; font-weight: bold; text-align: center;">
-                    ⚠️ Atención: Se aplicó tope máximo de cálculo.
+                <div id="grid-detalles" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+                    </div>
+
+                <div id="alert-pospago" class="hidden" style="color: #e74c3c; background: #fdeaea; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.75rem; font-weight: bold; text-align: center;">
+                    ⚠️ Tope máximo de Pospagos aplicado.
                 </div>
                 
-                <div class="total-card">
-                    <span class="total-title">TOTAL ESTIMADO</span>
-                    <div id="display-total" class="total-value">Gs. 0</div>
-                    <div id="display-bono" class="sub-value"></div>
+                <div class="total-box">
+                    <span style="font-size: 0.75rem; opacity: 0.9;">MONTO ESTIMADO 🔥</span>
+                    <div id="display-total" style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin: 5px 0;">Gs. 0</div>
+                    <div id="display-bono" style="font-size: 0.7rem; font-weight: bold; color: #fff; background: rgba(255,255,255,0.2); border-radius: 5px; display: inline-block; padding: 2px 8px;"></div>
                 </div>
-                <button onclick="location.reload()" class="btn-reload">CERRAR SESIÓN / LIMPIAR</button>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <span onclick="location.reload()" style="color: var(--celeste-tigo); font-size: 0.8rem; font-weight: bold; cursor: pointer; text-decoration: underline;">
+                        CERRAR SESIÓN / LIMPIAR
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="modal-guia" class="modal-overlay hidden" style="z-index: 6000;">
-        <div class="modal-content" style="max-width: 90%; width: 400px; padding: 0; overflow: hidden;">
+        <div class="modal-content" style="max-width: 90%; width: 380px; padding: 0; overflow: hidden; border-radius: 20px;">
             <div style="background: var(--azul-tigo); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin:0; font-size: 1rem;">Centro de Ayuda</h3>
-                <span id="close-guia" style="cursor:pointer; font-size: 1.8rem;">&times;</span>
+                <h3 style="margin:0; font-size: 1rem; font-family: 'Orbitron', sans-serif;">GUÍA RÁPIDA</h3>
+                <span id="close-guia" style="cursor:pointer; font-size: 2rem; line-height: 1;">&times;</span>
             </div>
-            <div id="guia-body" style="padding: 20px; max-height: 70vh; overflow-y: auto; text-align: left;">
+            <div id="guia-body" style="padding: 20px; max-height: 60vh; overflow-y: auto; text-align: left; font-size: 0.85rem; color: #444;">
                 </div>
         </div>
     </div>
