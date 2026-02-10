@@ -1,155 +1,153 @@
 :root {
     --azul-tigo: #00377d;
-    --azul-oscuro: #001e44;
     --celeste-tigo: #00a1de;
     --blanco: #ffffff;
-    --gris-fondo: #f4f7f9;
-    --degradado-tigo: linear-gradient(135deg, #00377d 0%, #00a1de 100%);
+    --gris-claro: #f8f9fa;
 }
-
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--gris-fondo);
+    background-color: #f0f2f5;
     margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
-    color: #333;
-    overflow-x: hidden;
+    padding: 10px;
 }
 
-/* MARCA DE AGUA ESTÉTICA */
+/* MARCA DE AGUA DISCRETA */
 #watermark {
-    position: fixed; top: 0; left: 0; width: 150vw; height: 150vh;
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-content: space-around;
-    opacity: 0.04; pointer-events: none; z-index: 9999;
-    font-size: 0.65rem; color: #000; transform: rotate(-25deg) translate(-10%, -10%);
-    gap: 80px; user-select: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: space-around;
+    opacity: 0.05; /* Muy tenue como en tu imagen */
+    pointer-events: none;
+    z-index: 9999;
+    transform: rotate(-30deg);
+    font-size: 0.7rem;
+    color: #333;
 }
 
 .app-container {
     width: 100%;
-    max-width: 480px;
-    padding: 15px;
-    min-height: 100vh;
+    max-width: 400px;
 }
 
 header {
     text-align: center;
-    padding: 20px 0;
+    margin-bottom: 20px;
 }
 
-.brand-logo {
+header h1 {
+    color: var(--azul-tigo);
     font-family: 'Orbitron', sans-serif;
     font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--azul-tigo);
-    letter-spacing: 1px;
+    margin-bottom: 5px;
 }
 
-.subtitle {
-    font-size: 0.8rem;
+.asesor-tag {
     color: var(--celeste-tigo);
-    margin-top: 5px;
+    font-size: 0.8rem;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
-/* CARDS PRINCIPALES */
+/* LA CARD BLANCA PRINCIPAL */
 .main-card {
     background: var(--blanco);
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    border-top: 5px solid var(--celeste-tigo);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #e1e4e8;
 }
 
-label {
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--azul-oscuro);
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
 }
 
 select, input {
     width: 100%;
     padding: 12px;
-    border: 1.5px solid #e1e8ef;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    margin-bottom: 15px;
-    outline: none;
-    transition: 0.3s;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 1rem;
 }
 
-select:focus, input:focus {
-    border-color: var(--celeste-tigo);
-}
-
-.input-grid {
+.grid-inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
 
-/* BOTONES */
+/* BOTÓN CALCULAR AZUL TIGO */
 .btn-main {
-    background: var(--degradado-tigo);
+    width: 100%;
+    padding: 15px;
+    background-color: var(--azul-tigo);
     color: white;
     border: none;
-    padding: 15px;
-    border-radius: 12px;
+    border-radius: 8px;
     font-weight: bold;
     font-size: 1rem;
+    margin-top: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 161, 222, 0.3);
+}
+
+/* BOTÓN FLOTANTE DE AYUDA */
+.floating-help {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background: var(--celeste-tigo);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,161,222,0.4);
+    z-index: 2000;
+    cursor: pointer;
+    border: 2px solid white;
 }
 
 /* RESULTADOS */
-.total-card {
-    background: var(--azul-tigo);
-    background: var(--degradado-tigo);
-    color: white;
-    padding: 25px;
-    border-radius: 20px;
+.res-card {
     margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.total-box {
+    background: var(--azul-tigo);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 55, 125, 0.2);
+    margin-top: 20px;
 }
 
-.total-value {
+.total-amount {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    margin: 10px 0;
+    font-size: 1.8rem;
+    display: block;
 }
 
-.row-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 0.9rem;
-}
-
-/* MODALES Y AYUDA */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 30, 68, 0.9); display: flex; justify-content: center; align-items: center;
-}
-
-.modal-content {
-    background: white; border-radius: 25px; width: 90%; max-width: 380px;
-    padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.floating-help {
-    position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
-    background: var(--celeste-tigo); color: white; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center; font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0, 161, 222, 0.4); z-index: 2000; font-size: 1.2rem;
-}
-
-.blur-content { filter: blur(10px); }
 .hidden { display: none !important; }
