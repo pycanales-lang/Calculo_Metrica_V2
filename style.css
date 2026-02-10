@@ -1,121 +1,38 @@
-:root { --azul-tigo: #00377d; --celeste-tigo: #00a1de; --fondo: #f4f7f9; }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { background: var(--fondo); font-family: 'Roboto', sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
-.app-container { width: 100%; max-width: 400px; }
-header { text-align: center; margin-bottom: 20px; }
-.brand-logo { font-weight: bold; font-size: 1.2rem; color: var(--azul-tigo); font-family: 'Orbitron'; }
-.subtitle { font-size: 0.7rem; color: var(--celeste-tigo); font-weight: bold; }
-.main-card { background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--azul-tigo); }
-.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-input, select { width: 100%; border: 1px solid #ced4da; border-radius: 8px; padding: 12px; font-size: 1rem; color: #333; }
-.btn-main { width: 100%; margin-top: 20px; padding: 15px; background: var(--azul-tigo); border: none; border-radius: 10px; color: #fff; font-weight: bold; cursor: pointer; }
+:root { --azul-tigo: #00377d; --celeste-tigo: #00a1de; --gris: #f4f7f9; }
+body { font-family: 'Roboto', sans-serif; background: var(--gris); margin: 0; padding: 10px; overflow-x: hidden; }
 
-/* Flexibilidad */
-.advanced-settings { margin-top: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; }
-.advanced-settings summary { font-size: 0.7rem; padding: 8px; cursor: pointer; color: var(--celeste-tigo); font-weight: bold; }
-.settings-grid { padding: 10px; display: grid; gap: 8px; }
-.set-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--azul-tigo); font-weight: bold; }
-.set-row input { width: 70px; padding: 5px; text-align: center; border: 1px solid #ccc; font-size: 0.7rem; }
-
-/* Lo demás se mantiene igual */
-.floating-help { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--celeste-tigo); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 100; cursor: pointer; border: 2px solid #fff;}
-.help-section { margin-top: 15px; background: #e1e8f0; border-radius: 10px; }
-.help-section summary { padding: 12px; font-weight: bold; cursor: pointer; font-size: 0.8rem;}
-.img-container { margin-top: 10px; text-align: center; border-top: 1px solid #ccc; padding-top: 10px;}
-.img-container img { width: 100%; border-radius: 8px; }
-.details-container { margin-top: 20px; background: #fff; border-radius: 10px; border: 1px solid #eee; }
-.row-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
-.total-card { margin-top: 15px; padding: 20px; background: var(--azul-tigo); border-radius: 12px; text-align: center; color: #fff; }
-.total-value { font-size: 1.8rem; font-weight: bold; font-family: 'Orbitron'; }
-.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0, 55, 125, 0.9); display: flex; justify-content: center; align-items: center; z-index: 999; }
-.modal-content { background: #fff; padding: 25px; border-radius: 20px; text-align: center; width: 85%; }
-.info-tag { background: #fff3cd; color: #856404; font-size: 0.75rem; padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center; }
-.hidden { display: none !important; }
-.btn-reload { width:100%; background:none; border:none; color:var(--celeste-tigo); margin-top: 15px; text-decoration: underline; cursor:pointer; }
-
-/* ... Tus estilos anteriores ... */
-
-/* Marca de agua para evitar fotos limpias */
+/* MARCA DE AGUA PROFESIONAL */
 #watermark {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    font-size: 4rem;
-    color: rgba(0,0,0,0.03);
-    pointer-events: none;
-    z-index: 100;
-    white-space: nowrap;
-    user-select: none;
+    position: fixed; top: 0; left: 0; width: 150vw; height: 150vh;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-content: space-around;
+    opacity: 0.04; pointer-events: none; z-index: 9999;
+    font-size: 0.65rem; color: #000; transform: rotate(-25deg) translate(-10%, -10%);
+    gap: 80px; user-select: none;
 }
 
-/* Bloqueo de impresión */
-@media print {
-    body { display: none !important; }
-}
-
-/* Evitar selección de texto */
-body {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Marca de Agua Estética y Profesional */
-#watermark {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 150vw; /* Más ancho para cubrir la rotación */
-    height: 150vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: space-around;
-    opacity: 0.04; /* Casi invisible, pero sale en fotos con contraste */
-    pointer-events: none;
-    z-index: 9999;
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.65rem; /* Pequeño y discreto */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #000;
-    transform: rotate(-25deg) translate(-10%, -10%);
-    user-select: none;
-    gap: 100px; /* Espaciado entre repeticiones para que no se vea "sucio" */
-}
-
-/* Evitar que se vea en impresiones si es que llegaran a saltar el bloqueo */
-@media print {
-    #watermark { display: none; }
-}
-
-.ayuda-card {
-    background: #f8f9fa;
-    border-radius: 12px;
-    padding: 15px;
-    border-left: 4px solid var(--celeste-tigo);
-}
-
-.ayuda-card ul li {
-    margin-bottom: 8px;
-}
-
-/* Asegurar que el modal se vea sobre todo */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center;
 }
 
-.hidden {
-    display: none !important;
+.modal-content { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+.floating-help {
+    position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
+    background: var(--celeste-tigo); color: white; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center; font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; z-index: 2000;
 }
+
+.hidden { display: none !important; }
+.blur-content { filter: blur(8px); }
+
+/* App Container y Cards se mantienen igual que tu versión anterior */
+.app-container { max-width: 450px; margin: 0 auto; }
+.main-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.btn-main { width: 100%; padding: 15px; background: var(--azul-tigo); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.total-card { background: var(--azul-tigo); color: white; padding: 20px; border-radius: 12px; margin-top: 15px; text-align: center; }
+.total-value { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; margin-top: 5px; }
+
+.ayuda-card h4 { margin: 0 0 10px 0; color: var(--azul-tigo); border-left: 4px solid var(--celeste-tigo); padding-left: 10px; }
+.ayuda-card ul { padding-left: 18px; font-size: 0.85rem; line-height: 1.4; }
