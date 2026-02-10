@@ -3,55 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calcula Comisión</title>
+    <title>Calculador Comision</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
-<body oncontextmenu="return false;"> <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo); z-index: 2000;">
+<body oncontextmenu="return false;">
+
+    <div id="watermark"></div>
+
+    <div id="login-screen" class="modal-overlay" style="background: var(--azul-tigo); z-index: 5000;">
         <div class="modal-content" style="max-width: 350px;">
-            <div class="brand-logo" style="margin-bottom: 20px;">ACCESO RESTRINGIDO</div>
+            <div class="brand-logo" style="margin-bottom: 20px;">ACCESO ASESORES</div>
             <div class="input-group">
                 <label>ID VENDEDOR (CH)</label>
                 <input type="text" id="input-auth-ch" placeholder="Ingrese su ID" style="text-align: center; border: 2px solid var(--azul-tigo);">
             </div>
             <button id="btn-ingresar" class="btn-main">VALIDAR Y ENTRAR</button>
-            <p id="auth-error" style="color: red; font-size: 0.7rem; margin-top: 10px; display: none;">ID incorrecto o vendedor Inactivo.</p>
+            <p id="auth-error" style="color: #ff4d4d; font-size: 0.75rem; margin-top: 15px; display: none; font-weight: bold;">⚠️ ID incorrecto o vendedor Inactivo.</p>
         </div>
     </div>
-
-    <div id="modal-guia" class="modal-overlay hidden" style="z-index: 3000;">
-    <div class="modal-content" style="max-width: 90%; width: 400px; padding: 0; overflow: hidden; border-radius: 20px;">
-        <div style="background: var(--azul-tigo); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin:0; font-size: 1rem;">Centro de Ayuda</h3>
-            <span id="close-guia" style="cursor:pointer; font-size: 1.8rem; line-height: 1;">&times;</span>
-        </div>
-        
-        <div id="guia-body" style="padding: 20px; max-height: 70vh; overflow-y: auto; text-align: left;">
-            </div>
-    </div>
-</div>
 
     <div id="app-main-content" style="display: none;">
-        <div id="watermark">DATO - CONFIDENCIAL</div>
         
         <div id="btn-guia" class="floating-help">?</div>
 
         <div class="app-container">
             <header>
-                <div class="brand-logo">CALCULA TUS COMISIONES</div>
-                <p id="saludo-vendedor" class="subtitle">RESULTADOS ESTIMADO</p>
+                <div class="brand-logo">CALCULADORA</div>
+                <p id="saludo-vendedor" class="subtitle">RESULTADOS ESTIMADOS</p>
             </header>
 
             <div class="main-card">
-                <label>ESQUEMA DE TRABAJO</label>
+                <label>CANAL</label>
                 <select id="select-esquema">
                     <option value="STAFF">STAFF (BÁSICO + VARIABLE)</option>
-                    <option value="CORRETAJE">CORRETAJE (VIATICO + VARIABLE)</option>
+                    <option value="CORRETAJE">CORRETAJE</option>
                 </select>
 
                 <div class="input-grid">
-                    <div class="field"><label>B2B (FIJO)</label><input type="number" id="input-B2B" placeholder="0"></div>
-                    <div class="field"><label>HOGAR (FIJO)</label><input type="number" id="input-HOGAR" placeholder="0"></div>
+                    <div class="field"><label>B2B (Fijo)</label><input type="number" id="input-B2B" placeholder="0"></div>
+                    <div class="field"><label>HOGAR (Fijo)</label><input type="number" id="input-HOGAR" placeholder="0"></div>
                     <div class="field"><label>POSPAGO</label><input type="number" id="input-POSPAGO" placeholder="0"></div>
                     <div class="field"><label>PREPAGO</label><input type="number" id="input-PREPAGO" placeholder="0"></div>
                 </div>
@@ -69,14 +60,11 @@
                 <button id="btn-calcular" class="btn-main">CALCULAR COMISIONES</button>
             </div>
 
-            <details class="help-section">
-                <summary>Políticas e Imágenes</summary>
-                <div id="help-content-dinamico"></div>
-            </details>
-
-            <div id="resultados-area" class="hidden no-print">
+            <div id="resultados-area" class="hidden">
                 <div id="grid-detalles" class="details-container"></div>
-                <div id="alert-pospago" class="info-tag hidden">⚠️ Política Staff: Tope de 3 Pospagos aplicado.</div>
+                <div id="alert-pospago" class="info-tag hidden" style="color: #e74c3c; background: #fdeaea; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.8rem; font-weight: bold; text-align: center;">
+                    ⚠️ Atención: Se aplicó tope máximo de cálculo.
+                </div>
                 
                 <div class="total-card">
                     <span class="total-title">TOTAL ESTIMADO</span>
@@ -87,7 +75,18 @@
             </div>
         </div>
     </div>
-    
+
+    <div id="modal-guia" class="modal-overlay hidden" style="z-index: 6000;">
+        <div class="modal-content" style="max-width: 90%; width: 400px; padding: 0; overflow: hidden;">
+            <div style="background: var(--azul-tigo); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin:0; font-size: 1rem;">Centro de Ayuda</h3>
+                <span id="close-guia" style="cursor:pointer; font-size: 1.8rem;">&times;</span>
+            </div>
+            <div id="guia-body" style="padding: 20px; max-height: 70vh; overflow-y: auto; text-align: left;">
+                </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
