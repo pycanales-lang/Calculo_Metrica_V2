@@ -1,115 +1,37 @@
 document.addEventListener('DOMContentLoaded', function() {
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywR2KoNRTbW6nPPTVpCRGXuS1bWYnZ8DXJTMf6YG2nzbYiTOOCDp-R7sKi0_xAghBa/exec";
 
-    // --- ELEMENTOS DEL DOM ---
+    // --- ELEMENTOS ---
     const loginScreen = document.getElementById('login-screen');
     const mainContent = document.getElementById('app-main-content');
     const btnIngresar = document.getElementById('btn-ingresar');
     const errorMsg = document.getElementById('auth-error');
     const selectEsquema = document.getElementById('select-esquema');
-    const helpContent = document.getElementById('help-content-dinamico');
     const modalGuia = document.getElementById('modal-guia');
     const btnGuia = document.getElementById('btn-guia');
     const closeGuia = document.getElementById('close-guia');
+    const guiaBody = document.getElementById('guia-body');
 
-    // --- SEGURIDAD: Bloqueo de Captura de Pantalla ---
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'PrintScreen' || (e.ctrlKey && e.pKey)) {
-            alert('Captura de pantalla no permitida por seguridad corporativa.');
-            document.body.style.display = 'none';
-            setTimeout(() => { document.body.style.display = 'block'; }, 1000);
-            e.preventDefault();
-        }
-    });
-
-    window.onblur = function() {
-        mainContent.classList.add('blur-content');
-    };
-    window.onfocus = function() {
-        mainContent.classList.remove('blur-content');
-    };
-
+    // --- SEGURIDAD ---
     function generarMarcaAgua(nombreVendedor) {
         const wm = document.getElementById('watermark');
-        if (!wm) return;
-        
-        wm.innerHTML = ""; // Limpiar
-        
-        // Creamos un texto breve: Nombre + ID o solo Nombre
-        const textoSeguridad = `${nombreVendedor} • TIGO POS • `;
-        
-        // Generamos suficientes repeticiones para cubrir el fondo con espaciado
+        wm.innerHTML = "";
+        const texto = `${nombreVendedor} • TIGO POS • `;
         for (let i = 0; i < 60; i++) {
             const span = document.createElement('span');
-            span.innerText = textoSeguridad;
+            span.innerText = texto;
             wm.appendChild(span);
         }
     }
 
-// Función para mostrar la ayuda según el esquema seleccionado
-function cargarContenidoAyuda() {
-    const modo = document.getElementById('select-esquema').value;
-    const guiaBody = document.getElementById('guia-body');
-    
-    let html = "";
+    window.onblur = () => mainContent.classList.add('blur-content');
+    window.onfocus = () => mainContent.classList.remove('blur-content');
 
-    if (modo === "STAFF") {
-        html = `
-            <div class="ayuda-card">
-                <h4 style="color:var(--azul-tigo); margin-top:0;">Esquema STAFF</h4>
-                <ul style="padding-left: 20px; font-size: 0.85rem; color: #444;">
-                    <li><b>Sueldo Fijo:</b> Gs. 2.900.000 incluido.</li>
-                    <li><b>Plus Acelerador:</b> Se activa con 31 llaves.</li>
-                    <li><b>Llaves para Plus:</b> Suma B2B + Hogar + (Max. 3 Pospago).</li>
-                    <li><b>Comisiones:</b> Se pagan sobre el excedente de la meta según niveles M0 a M4.</li>
-                </ul>
-                <img src="assets/politica-staff.png" style="width:100%; border-radius:10px; margin-top:10px;" alt="Tabla Staff">
-            </div>
-        `;
-    } else {
-        html = `
-            <div class="ayuda-card">
-                <h4 style="color:var(--azul-tigo); margin-top:0;">Esquema CORRETAJE</h4>
-                <ul style="padding-left: 20px; font-size: 0.85rem; color: #444;">
-                    <li><b>Viáticos:</b> Escala según instalaciones (6, 9, 15, 20 o 25).</li>
-                    <li><b>Productos:</b> Solo comisiona B2B y Hogar (Métrica Directa).</li>
-                    <li><b>Niveles:</b> Los porcentajes M0-M4 mejoran al superar las 16 instalaciones.</li>
-                </ul>
-                <img src="assets/metrica-corretaje.png" style="width:100%; border-radius:10px; margin-top:10px;" alt="Tabla Corretaje">
-            </div>
-        `;
-    }
-    
-    guiaBody.innerHTML = html;
-}
-
-// Control de apertura y cierre
-if (btnGuia) {
-    btnGuia.onclick = () => {
-        cargarContenidoAyuda(); // Cargamos el contenido justo antes de mostrar
-        modalGuia.classList.remove('hidden');
-    };
-}
-
-if (closeGuia) {
-    closeGuia.onclick = () => modalGuia.classList.add('hidden');
-}
-
-// Cerrar al hacer clic fuera del contenido blanco
-window.onclick = function(event) {
-    if (event.target == modalGuia) {
-        modalGuia.classList.add('hidden');
-    }
-};
-    
-    // --- LÓGICA DE LOGIN ---
+    // --- LOGIN ---
     btnIngresar.onclick = async function() {
         const ch = document.getElementById('input-auth-ch').value.trim();
         if(!ch) return;
-        
         btnIngresar.innerText = "VERIFICANDO...";
-        errorMsg.style.display = 'none';
-
         try {
             const res = await fetch(`${WEB_APP_URL}?action=validarCH&ch=${ch}`);
             const data = await res.json();
@@ -121,51 +43,63 @@ window.onclick = function(event) {
             } else {
                 errorMsg.style.display = 'block';
             }
-        } catch(e) { 
-            alert("Error de red o URL incorrecta"); 
-        } finally {
-            btnIngresar.innerText = "VALIDAR Y ENTRAR";
-        }
+        } catch(e) { alert("Error de conexión"); }
+        btnIngresar.innerText = "VALIDAR Y ENTRAR";
     };
 
-    // --- CONTROL DE VISTAS (STAFF VS CORRETAJE) ---
-    function ajustarInterfazModo() {
+    // --- AYUDA DINÁMICA ---
+    function cargarAyuda() {
         const modo = selectEsquema.value;
-        const campoPos = document.getElementById('input-POSPAGO').parentElement;
-        const campoPre = document.getElementById('input-PREPAGO').parentElement;
-        
-        // Ajustes de auditoría (filas 3 y 4 son pospago)
-        const settingsRows = document.querySelectorAll('.set-row');
-
-        if (modo === "CORRETAJE") {
-            // Ocultar Pospago y Prepago en inputs y configuración
-            campoPos.style.display = 'none';
-            campoPre.style.display = 'none';
-            if(settingsRows[2]) settingsRows[2].style.display = 'none';
-            if(settingsRows[3]) settingsRows[3].style.display = 'none';
-            
-            helpContent.innerHTML = `<div class="img-container"><span>MÉTRICA CORRETAJE</span><img src="assets/metrica-corretaje.png"></div>`;
+        if (modo === "STAFF") {
+            guiaBody.innerHTML = `
+                <div class="ayuda-card">
+                    <h4>Esquema STAFF</h4>
+                    <ul>
+                        <li><b>Acelerador (Plus):</b> Se activa con 31 o más instalaciones.</li>
+                        <li><b>Regla Plus:</b> Suma B2B + Hogar + (Max 3 Pospago).</li>
+                        <li><b>Cálculo Pos:</b> Muestra hasta 5 líneas en el detalle.</li>
+                        <li><b>Sueldo Fijo:</b> Gs. 2.900.000 asegurado.</li>
+                    </ul>
+                    <img src="assets/politica-staff.png" style="width:100%; border-radius:8px;">
+                </div>`;
         } else {
-            // Mostrar todo para Staff
-            campoPos.style.display = 'block';
-            campoPre.style.display = 'block';
-            if(settingsRows[2]) settingsRows[2].style.display = 'flex';
-            if(settingsRows[3]) settingsRows[3].style.display = 'flex';
-            
-            helpContent.innerHTML = `<div class="img-container"><span>STAFF</span><img src="assets/politica-staff.png"></div>`;
+            guiaBody.innerHTML = `
+                <div class="ayuda-card">
+                    <h4>Esquema CORRETAJE</h4>
+                    <ul>
+                        <li><b>Foco:</b> Solo B2B y Hogar.</li>
+                        <li><b>Viáticos:</b> Escala de 6, 9, 15, 20 y 25 inst.</li>
+                        <li><b>Niveles:</b> M0 a M4 se potencian al superar 16 ventas.</li>
+                    </ul>
+                    <img src="assets/metrica-corretaje.png" style="width:100%; border-radius:8px;">
+                </div>`;
         }
     }
 
-    selectEsquema.onchange = ajustarInterfazModo;
-    ajustarInterfazModo(); // Ejecución inicial
+    btnGuia.onclick = () => { cargarAyuda(); modalGuia.classList.remove('hidden'); };
+    closeGuia.onclick = () => modalGuia.classList.add('hidden');
 
-    // --- MODAL DE GUÍA (?) ---
-    if (btnGuia) {
-        btnGuia.onclick = () => modalGuia.classList.remove('hidden');
+    // --- LÓGICA DE VISIBILIDAD ---
+    function ajustarVistas() {
+        const modo = selectEsquema.value;
+        const posInput = document.getElementById('input-POSPAGO').parentElement;
+        const preInput = document.getElementById('input-PREPAGO').parentElement;
+        const auditoriaRows = document.querySelectorAll('.set-row');
+
+        if (modo === "CORRETAJE") {
+            posInput.style.display = 'none';
+            preInput.style.display = 'none';
+            if(auditoriaRows[2]) auditoriaRows[2].style.display = 'none';
+            if(auditoriaRows[3]) auditoriaRows[3].style.display = 'none';
+        } else {
+            posInput.style.display = 'block';
+            preInput.style.display = 'block';
+            if(auditoriaRows[2]) auditoriaRows[2].style.display = 'flex';
+            if(auditoriaRows[3]) auditoriaRows[3].style.display = 'flex';
+        }
     }
-    if (closeGuia) {
-        closeGuia.onclick = () => modalGuia.classList.add('hidden');
-    }
+    selectEsquema.onchange = ajustarVistas;
+    ajustarVistas();
 
     // --- MOTOR DE CÁLCULO ---
     document.getElementById('btn-calcular').onclick = function() {
@@ -180,42 +114,32 @@ window.onclick = function(event) {
         let pre = parseInt(document.getElementById('input-PREPAGO').value) || 0;
         const modo = selectEsquema.value;
 
-        // --- NUEVA LÓGICA DE SUMATORIA PARA ACELERADOR (PLUS) ---
-        // Para el acelerador Staff: Suma B2B + HOGAR + (Hasta 3 Pospagos)
-        let posParaPlus = (modo === "STAFF" && posIn > 3) ? 3 : posIn;
-        const totalParaPlus = b2b + hog + posParaPlus;
+        // Lógica Plus: B2B + Hogar + (Max 3 Pospago)
+        let posParaValidarPlus = (modo === "STAFF" && posIn > 3) ? 3 : posIn;
+        const llavesParaPlus = b2b + hog + posParaValidarPlus;
+        const llavesTotales = b2b + hog;
 
-        // Determinar si aplica acelerador (31 o más instalaciones según imagen)
-        const acelera = (modo === "STAFF" && totalParaPlus >= 31);
-        
-        // Tasas de pago según Métrica Directa HOME
+        const acelera = (modo === "STAFF" && llavesParaPlus >= 31);
         const T_STAFF = acelera ? [0.20, 0.20, 0.30, 0.30, 0.50] : [0.15, 0.15, 0.20, 0.30, 0.45];
-        const T_CORR = (totalParaPlus >= 16) ? [0.50, 0.50, 0.75, 0.75, 1.00] : (totalParaPlus >= 9 ? [0.50, 0.50, 0.50, 0.50, 0.50] : [0.30, 0.30, 0.30, 0.40, 0.50]);
+        const T_CORR = (llavesTotales >= 16) ? [0.50, 0.50, 0.75, 0.75, 1.00] : (llavesTotales >= 9 ? [0.50, 0.50, 0.50, 0.50, 0.50] : [0.30, 0.30, 0.30, 0.40, 0.50]);
         const tA = (modo === "STAFF") ? T_STAFF : T_CORR;
 
         const calc = (cant, val, pct, esLl) => {
             let s = 0;
             tA.forEach(t => { 
-                if (modo === "CORRETAJE" && !esLl && totalParaPlus === 0) s += 0; 
+                if (modo === "CORRETAJE" && !esLl && llavesTotales === 0) s += 0; 
                 else s += (cant * val * pct * t); 
             });
             return Math.round(s);
         };
 
-        // --- LÓGICA DE PAGO (COMISIÓN) ---
-        // Se muestran hasta 5, pero se pagan hasta 3 en Staff
-        let posParaPago = (modo === "STAFF" && posIn > 3) ? 3 : (posIn > 5 ? 5 : posIn);
-        
-        // Alerta visual si supera el tope de pago de 3
-        document.getElementById('alert-pospago').classList.toggle('hidden', !(modo === "STAFF" && posIn > 3));
+        // Pospago: Mostramos hasta 5 según pedido
+        let posParaCalcular = (posIn > 5) ? 5 : posIn;
+        document.getElementById('alert-pospago').classList.toggle('hidden', !(modo === "STAFF" && posIn > 5));
 
-        const r = {
-            "B2B": calc(b2b, VAL_HOG, PCT_HOG, true),
-            "HOGAR": calc(hog, VAL_HOG, PCT_HOG, true)
-        };
-        
+        const r = { "B2B": calc(b2b, VAL_HOG, PCT_HOG, true), "HOGAR": calc(hog, VAL_HOG, PCT_HOG, true) };
         if (modo !== "CORRETAJE") {
-            r["POSPAGO"] = calc(posParaPago, VAL_POS, PCT_POS, false);
+            r["POSPAGO"] = calc(posParaCalcular, VAL_POS, PCT_POS, false);
             r["PREPAGO"] = calc(pre, 25000, 0.60, false);
         }
 
@@ -226,22 +150,17 @@ window.onclick = function(event) {
         }
 
         if (modo === "STAFF") {
-            tot += 2900000; // Sueldo Fijo
-            f += `<div class="row-item" style="border-top: 1px solid #333; margin-top:5px; padding-top:10px;"><span>SUELDO BÁSICO</span><strong>Gs. 2.900.000</strong></div>`;
-            
+            tot += 2900000;
+            f += `<div class="row-item" style="border-top: 1px solid #ddd; margin-top:5px; padding-top:10px;"><span>SUELDO FIJO</span><strong>Gs. 2.900.000</strong></div>`;
             if (acelera) {
-                // Escala de Acelerador según imagen: 31-35 (700k), 36-40 (1M), 41-45 (1.5M), 46-50 (1.8M)
-                let bon = totalParaPlus >= 46 ? 1800000 : totalParaPlus >= 41 ? 1500000 : totalParaPlus >= 36 ? 1000000 : 700000;
+                let bon = llavesParaPlus >= 46 ? 1800000 : llavesParaPlus >= 41 ? 1500000 : llavesParaPlus >= 36 ? 1000000 : 700000;
                 tot += bon;
-                document.getElementById('display-bono').innerText = "🚀 PLUS STAFF ACTIVO (Cant: " + totalParaPlus + ")";
-                f += `<div class="row-item" style="color: #2ecc71;"><span>PLUS ACELERADOR</span><strong>Gs. ${bon.toLocaleString('es-PY')}</strong></div>`;
-            } else {
-                document.getElementById('display-bono').innerText = "";
-            }
+                document.getElementById('display-bono').innerText = `🚀 PLUS ACTIVO (${llavesParaPlus} LLAVES)`;
+                f += `<div class="row-item" style="color:#00a1de;"><span>BONO QTY</span><strong>Gs. ${bon.toLocaleString('es-PY')}</strong></div>`;
+            } else { document.getElementById('display-bono').innerText = ""; }
         } else {
-            // Viáticos Corretaje según escala previa
             const vT = {6:800000, 9:900000, 15:1200000, 20:1500000, 25:1700000};
-            let vK = Object.keys(vT).reverse().find(k => totalParaPlus >= k);
+            let vK = Object.keys(vT).reverse().find(k => llavesTotales >= k);
             let vV = vK ? vT[vK] : 0;
             tot += vV;
             document.getElementById('display-bono').innerText = vV > 0 ? "🚚 VIÁTICO INCLUIDO" : "";
